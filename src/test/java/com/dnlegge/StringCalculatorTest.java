@@ -41,4 +41,22 @@ public class StringCalculatorTest {
 
     }
 
+    @Test
+    public void addThreeNumbersTest() {
+
+        final int add = davidsStringCalculator.add("1, 2, 3");
+
+        assertEquals(6, add);
+
+    }
+
+    @Test
+    public void addThreeNumbersWithLineBreakTest() {
+
+        final int add = davidsStringCalculator.add("1\n 2, 3");
+
+        assertEquals(6, add);
+
+    }
+
 }
