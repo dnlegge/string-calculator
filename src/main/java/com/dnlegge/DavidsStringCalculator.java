@@ -5,8 +5,12 @@ public class DavidsStringCalculator implements StringCalculator {
     @Override
     public int add(String numbers) {
         if (!numbers.isEmpty()) {
-            return Integer.parseInt(numbers);
+            return parseNumbers(numbers);
         }
         return 0;
+    }
+
+    private int parseNumbers(String numbers) {
+        return Integer.parseInt(numbers);
     }
 }
