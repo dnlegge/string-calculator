@@ -59,13 +59,21 @@ public class StringCalculatorTest {
         assertEquals(6, add);
 
     }
-
     @Test(expected = NumberFormatException.class)
     public void addThreeNumbersIllegalTest() {
 
         davidsStringCalculator.add("1,\n 2, 3");
 
         fail("Shouldn't have got here with incorrect input");
+
+    }
+
+    @Test
+    public void addWithChangedDelimiterTest() {
+
+        final int add = davidsStringCalculator.add("//;\n1;2");
+
+        assertEquals(3, add);
 
     }
 
