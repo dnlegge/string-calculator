@@ -1,22 +1,26 @@
 package com.dnlegge;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class StringCalculatorTest {
 
+    private StringCalculator davidsStringCalculator;
+
+    @Before
+    public void setUp() {
+        davidsStringCalculator = new DavidsStringCalculator();
+    }
+
     @Test
-    public void addTest() {
+    public void addEmptyStringTest() {
 
-        final StringCalculator davidsStringCalculator = new DavidsStringCalculator();
-
-        final int add = davidsStringCalculator.add("1, 2");
+        final int add = davidsStringCalculator.add("");
 
         assertEquals(0, add);
 
-        fail("start with failing test to know its running");
     }
 
 }
