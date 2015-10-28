@@ -65,7 +65,7 @@ public class DavidsStringCalculator implements StringCalculator {
     private void validateIntValue(int intValue) {
         if (intValue < 0) {
             //wouldn't usually use raw Runtime exception
-            throw new RuntimeException("negatives not allowed");
+            throw new RuntimeException("negatives not allowed: " + intValue);
         }
     }
 
