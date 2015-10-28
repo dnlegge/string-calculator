@@ -78,4 +78,13 @@ public class StringCalculatorTest {
 
     }
 
+    @Test(expected = RuntimeException.class)
+    public void addWithNegativeNumberFailsTest() {
+
+        final int add = davidsStringCalculator.add("//;\n-1;2");
+
+        fail("Should have thrown an exception");
+
+    }
+
 }

@@ -55,9 +55,18 @@ public class DavidsStringCalculator implements StringCalculator {
     private int iterateThroughArrayOfNumbers(String[] split) {
         int total = 0;
         for (String number : split) {
-            total += extractIntValue(number);
+            final int intValue = extractIntValue(number);
+            validateIntValue(intValue);
+            total += intValue;
         }
         return total;
+    }
+
+    private void validateIntValue(int intValue) {
+        if (intValue < 0) {
+            //wouldn't usually use raw Runtime exception
+            throw new RuntimeException("negatives not allowed");
+        }
     }
 
     private int extractIntValue(String number) {
