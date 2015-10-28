@@ -104,4 +104,21 @@ public class StringCalculatorTest {
 
     }
 
+    @Test
+    public void addWithMultipleNegativeNumberFailsWithErrorMessageTest() {
+
+        try {
+            davidsStringCalculator.add("//;\n-1;-2");
+
+            fail("Should have thrown an exception");
+
+        } catch (RuntimeException e) {
+
+            assertEquals("RuntimeException", e.getClass().getSimpleName());
+            assertEquals("negatives not allowed: -1 -2", e.getMessage());
+
+        }
+
+    }
+
 }
