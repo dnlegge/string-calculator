@@ -23,4 +23,13 @@ public class StringCalculatorTest {
 
     }
 
+    @Test
+    public void addOneNumberTest() {
+
+        final int add = davidsStringCalculator.add("1");
+
+        assertEquals(1, add);
+
+    }
+
 }
