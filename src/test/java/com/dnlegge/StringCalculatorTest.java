@@ -1,6 +1,7 @@
 package com.dnlegge;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +57,15 @@ public class StringCalculatorTest {
         final int add = davidsStringCalculator.add("1\n 2, 3");
 
         assertEquals(6, add);
+
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void addThreeNumbersIllegalTest() {
+
+        davidsStringCalculator.add("1,\n 2, 3");
+
+        fail("Shouldn't have got here with incorrect input");
 
     }
 
