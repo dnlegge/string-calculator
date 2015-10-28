@@ -59,6 +59,7 @@ public class StringCalculatorTest {
         assertEquals(6, add);
 
     }
+
     @Test(expected = NumberFormatException.class)
     public void addThreeNumbersIllegalTest() {
 
