@@ -98,7 +98,7 @@ public class StringCalculatorTest {
         } catch (RuntimeException e) {
 
             assertEquals("RuntimeException", e.getClass().getSimpleName());
-            assertEquals("negatives not allowed", e.getMessage());
+            assertEquals("negatives not allowed: -1", e.getMessage());
 
         }
 
