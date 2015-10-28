@@ -56,7 +56,7 @@ public class DavidsStringCalculator implements StringCalculator {
         int total = 0;
         String errorString = "";
         for (String number : split) {
-            final int intValue = extractIntValue(number);
+            final int intValue = extractIntValueIf1000OrLess(number);
             errorString += validateIntValue(intValue);
             total += intValue;
         }
@@ -74,8 +74,12 @@ public class DavidsStringCalculator implements StringCalculator {
         return "";
     }
 
-    private int extractIntValue(String number) {
-        return parseNumber(sanitiseInput(number));
+    private int extractIntValueIf1000OrLess(String number) {
+        final int intValue = parseNumber(sanitiseInput(number));
+        if (intValue > 1000) {
+            return 0;
+        }
+        return intValue;
     }
 
     private String sanitiseInput(String number) {

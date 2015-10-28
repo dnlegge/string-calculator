@@ -124,7 +124,7 @@ public class StringCalculatorTest {
     @Test
     public void addTwoNumbersIgnoringNumbersOver1000Test() {
 
-        final int add = davidsStringCalculator.add("1000, 2");
+        final int add = davidsStringCalculator.add("1001, 2");
 
         assertEquals(2, add);
 
