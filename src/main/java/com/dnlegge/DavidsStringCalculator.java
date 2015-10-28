@@ -2,7 +2,7 @@ package com.dnlegge;
 
 public class DavidsStringCalculator implements StringCalculator {
 
-    public static final String LIST_OF_TOKENS_TO_SPLIT_ON_REGEX = ",\\n";
+    public static final String LIST_OF_DEFAULT_DELIMITERS = ",\\n";
 
     @Override
     public int add(String numbers) {
@@ -11,24 +11,45 @@ public class DavidsStringCalculator implements StringCalculator {
             return 0;
         }
 
-        String preprocessedNumbers = numbers;
-
-        String possibleDelimiters = LIST_OF_TOKENS_TO_SPLIT_ON_REGEX;
-        if (numbers.startsWith("//")) {
-            final int indexOfFirstLineBreak = numbers.indexOf("\n");
-            possibleDelimiters = numbers.substring(2, indexOfFirstLineBreak);
-            preprocessedNumbers = numbers.substring(indexOfFirstLineBreak);
-        }
-
-        possibleDelimiters = "[" + possibleDelimiters + "]";
-
-        return handleArbitraryListOfNumbers(preprocessedNumbers, possibleDelimiters);
-    }
-
-    private int handleArbitraryListOfNumbers(String numbers, String possibleDelimiters) {
-        final String[] split = numbers.split(possibleDelimiters);
+        final String[] split = splitStringWithDefaultAndAnyExtraDelimiters(numbers);
 
         return iterateThroughArrayOfNumbers(split);
+    }
+
+    private String[] splitStringWithDefaultAndAnyExtraDelimiters(String numbers) {
+        String possibleDelimiters = getListOfDelimiters(numbers);
+
+        String preprocessedNumbers = getStringWithoutListOfExtraDelimitersIfIncluded(numbers, numbers);
+
+        return splitStringWithGivenDelimiters(preprocessedNumbers, possibleDelimiters);
+    }
+
+    private String getStringWithoutListOfExtraDelimitersIfIncluded(String numbers, String preprocessedNumbers) {
+        if (doesInputIncludeExtraDelimiters(numbers)) {
+            preprocessedNumbers = numbers.substring(getIndexOfFirstLineBreak(numbers));
+        }
+        return preprocessedNumbers;
+    }
+
+    private String getListOfDelimiters(String numbers) {
+        String possibleDelimiters = LIST_OF_DEFAULT_DELIMITERS;
+        if (doesInputIncludeExtraDelimiters(numbers)) {
+            final int indexOfFirstLineBreak = getIndexOfFirstLineBreak(numbers);
+            possibleDelimiters = numbers.substring(2, indexOfFirstLineBreak);
+        }
+        return possibleDelimiters;
+    }
+
+    private boolean doesInputIncludeExtraDelimiters(String numbers) {
+        return numbers.startsWith("//");
+    }
+
+    private String[] splitStringWithGivenDelimiters(String preprocessedNumbers, String possibleDelimiters) {
+        return preprocessedNumbers.split("[" + possibleDelimiters + "]");
+    }
+
+    private int getIndexOfFirstLineBreak(String numbers) {
+        return numbers.indexOf("\n");
     }
 
     private int iterateThroughArrayOfNumbers(String[] split) {
