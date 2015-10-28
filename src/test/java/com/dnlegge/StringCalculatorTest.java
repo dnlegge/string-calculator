@@ -81,9 +81,26 @@ public class StringCalculatorTest {
     @Test(expected = RuntimeException.class)
     public void addWithNegativeNumberFailsTest() {
 
-        final int add = davidsStringCalculator.add("//;\n-1;2");
+        davidsStringCalculator.add("//;\n-1;2");
 
         fail("Should have thrown an exception");
+
+    }
+
+    @Test
+    public void addWithNegativeNumberFailsWithErrorMessageTest() {
+
+        try {
+            davidsStringCalculator.add("//;\n-1;2");
+
+            fail("Should have thrown an exception");
+
+        } catch (RuntimeException e) {
+
+            assertEquals("RuntimeException", e.getClass().getSimpleName());
+            assertEquals("negatives not allowed", e.getMessage());
+
+        }
 
     }
 
