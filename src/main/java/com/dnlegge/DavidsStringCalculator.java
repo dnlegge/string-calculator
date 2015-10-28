@@ -13,7 +13,7 @@ public class DavidsStringCalculator implements StringCalculator {
     }
 
     private int handleArbitraryListOfNumbers(String numbers) {
-        final String[] split = numbers.split(",");
+        final String[] split = numbers.split("[,\\n]");
 
         return iterateThroughArrayOfNumbers(split);
     }
