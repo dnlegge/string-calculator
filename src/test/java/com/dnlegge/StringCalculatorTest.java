@@ -32,4 +32,13 @@ public class StringCalculatorTest {
 
     }
 
+    @Test
+    public void addTwoNumbersTest() {
+
+        final int add = davidsStringCalculator.add("1, 2");
+
+        assertEquals(3, add);
+
+    }
+
 }
