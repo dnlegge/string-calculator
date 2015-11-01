@@ -32,12 +32,35 @@ public class DavidsStringCalculator implements StringCalculator {
     }
 
     private String getListOfDelimiters(String numbers) {
-        String possibleDelimiters = LIST_OF_DEFAULT_DELIMITERS;
+        String possibleDelimiters = "[" + LIST_OF_DEFAULT_DELIMITERS + "]";
         if (doesInputIncludeExtraDelimiters(numbers)) {
-            final int indexOfFirstLineBreak = getIndexOfFirstLineBreak(numbers);
-            possibleDelimiters = numbers.substring(2, indexOfFirstLineBreak);
+            //hmm should this be appending not overwriting?
+            possibleDelimiters = getStringOfPossibleDelimiters(numbers);
         }
         return possibleDelimiters;
+    }
+
+    private String getStringOfPossibleDelimiters(String numbers) {
+        String firstLine = getFirstLine(numbers);
+        if (firstLine.contains("[") && firstLine.contains("]")) {
+            final String[] delimiters = firstLine.split("[\\[]");
+            firstLine = "";
+            for (String split : delimiters) {
+                if (!split.isEmpty()) {
+                    firstLine += escapeSpecialRegexChars(split.substring(0, split.indexOf("]")));
+                }
+            }
+        }
+        return firstLine;
+    }
+
+    String escapeSpecialRegexChars(String str) {
+        return str.replaceAll("\\*", "\\\\*");
+    }
+
+    private String getFirstLine(String numbers) {
+        final int indexOfFirstLineBreak = getIndexOfFirstLineBreak(numbers);
+        return numbers.substring(2, indexOfFirstLineBreak);
     }
 
     private boolean doesInputIncludeExtraDelimiters(String numbers) {
@@ -45,7 +68,7 @@ public class DavidsStringCalculator implements StringCalculator {
     }
 
     private String[] splitStringWithGivenDelimiters(String preprocessedNumbers, String possibleDelimiters) {
-        return preprocessedNumbers.split("[" + possibleDelimiters + "]");
+        return preprocessedNumbers.split(possibleDelimiters);
     }
 
     private int getIndexOfFirstLineBreak(String numbers) {
