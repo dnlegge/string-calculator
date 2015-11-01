@@ -26,7 +26,7 @@ public class DavidsStringCalculator implements StringCalculator {
 
     private String getStringWithoutListOfExtraDelimitersIfIncluded(String numbers, String preprocessedNumbers) {
         if (doesInputIncludeExtraDelimiters(numbers)) {
-            preprocessedNumbers = numbers.substring(getIndexOfFirstLineBreak(numbers));
+            preprocessedNumbers = numbers.substring(getIndexOfFirstLineBreak(numbers) + 1);
         }
         return preprocessedNumbers;
     }
@@ -42,16 +42,29 @@ public class DavidsStringCalculator implements StringCalculator {
 
     private String getStringOfPossibleDelimiters(String numbers) {
         String firstLine = getFirstLine(numbers);
-        if (firstLine.contains("[") && firstLine.contains("]")) {
-            final String[] delimiters = firstLine.split("[\\[]");
-            firstLine = "";
-            for (String split : delimiters) {
-                if (!split.isEmpty()) {
-                    firstLine += escapeSpecialRegexChars(split.substring(0, split.indexOf("]")));
-                }
+        if (!hasSquareBrackets(firstLine)) {
+            return firstLine;
+        }
+        return handleArbitraryLengthDelimiters(firstLine);
+    }
+
+    private boolean hasSquareBrackets(String firstLine) {
+        return firstLine.contains("[") && firstLine.contains("]");
+    }
+
+    private String handleArbitraryLengthDelimiters(String firstLine) {
+        final String[] delimiters = firstLine.split("[\\[]");
+        StringBuilder toReturn = new StringBuilder();
+        for (String split : delimiters) {
+            if (!split.isEmpty()) {
+                toReturn.append(escapeSpecialRegexChars(removeTrailingSquareBracket(split)));
             }
         }
-        return firstLine;
+        return toReturn.toString();
+    }
+
+    private String removeTrailingSquareBracket(String split) {
+        return split.substring(0, split.indexOf("]"));
     }
 
     String escapeSpecialRegexChars(String str) {
@@ -77,16 +90,16 @@ public class DavidsStringCalculator implements StringCalculator {
 
     private int iterateThroughArrayOfNumbers(String[] split) {
         int total = 0;
-        String errorString = "";
+        StringBuilder errorString = new StringBuilder();
         for (String number : split) {
             final int intValue = extractIntValueIf1000OrLess(number);
-            errorString += validateIntValue(intValue);
+            errorString.append(validateIntValue(intValue));
             total += intValue;
         }
-        if (errorString.isEmpty()) {
+        if (errorString.length() == 0) {
             return total;
         }
-        throw new RuntimeException("negatives not allowed:" + errorString.replace("-", " -"));
+        throw new RuntimeException("negatives not allowed:" + errorString.toString().replace("-", " -"));
     }
 
     private String validateIntValue(int intValue) {
