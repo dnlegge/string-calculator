@@ -130,5 +130,13 @@ public class StringCalculatorTest {
 
     }
 
+    @Test
+    public void addWithArbitraryLengthDelimiterTest() {
+
+        final int add = davidsStringCalculator.add("//[**]\n1**2**3");
+
+        assertEquals(6, add);
+
+    }
 
 }
