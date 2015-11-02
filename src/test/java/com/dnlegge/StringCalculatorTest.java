@@ -146,4 +146,12 @@ public class StringCalculatorTest {
         assertEquals(6, add);
     }
 
+    @Test
+    public void addWithMultipleArbitraryCharDelimiterTest() {
+
+        final int add = davidsStringCalculator.add("//[**][%%]\n1**2%%3");
+
+        assertEquals(6, add);
+    }
+
 }
