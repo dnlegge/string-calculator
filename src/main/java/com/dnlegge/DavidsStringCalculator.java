@@ -32,18 +32,19 @@ public class DavidsStringCalculator implements StringCalculator {
     }
 
     private String getListOfDelimiters(String numbers) {
-        String possibleDelimiters = "[" + LIST_OF_DEFAULT_DELIMITERS + "]";
         if (doesInputIncludeExtraDelimiters(numbers)) {
-            //hmm should this be appending not overwriting?
-            possibleDelimiters = getStringOfPossibleDelimiters(numbers);
+            return getStringOfPossibleDelimiters(numbers);
         }
-        return possibleDelimiters;
+        return "[" + LIST_OF_DEFAULT_DELIMITERS + "]";
     }
 
     private String getStringOfPossibleDelimiters(String numbers) {
         String firstLine = getFirstLine(numbers);
         if (!hasSquareBrackets(firstLine)) {
-            return escapeSpecialRegexChars(firstLine);
+            //Append extra delimiters to default ones.
+            //This isn't specified in the spec, but I feel would be expected
+            //Can be removed if incorrect
+            return "[" + LIST_OF_DEFAULT_DELIMITERS + escapeSpecialRegexChars(firstLine) + "]";
         }
         return handleArbitraryLengthDelimiters(firstLine);
     }
@@ -57,16 +58,24 @@ public class DavidsStringCalculator implements StringCalculator {
         final StringBuilder toReturn = new StringBuilder();
         for (String split : delimiters) {
             if (!split.isEmpty()) {
-                if (toReturn.length() != 0) {
-                    toReturn.append("|");
-                }
+                appendOrIfNotFirstClause(toReturn);
                 toReturn.append("(");
-                toReturn.append(escapeSpecialRegexChars(removeTrailingSquareBracket(split)));
+                toReturn.append(getCleanStringForRegex(split));
                 toReturn.append(")");
 
             }
         }
         return toReturn.toString();
+    }
+
+    private String getCleanStringForRegex(String split) {
+        return escapeSpecialRegexChars(removeTrailingSquareBracket(split));
+    }
+
+    private void appendOrIfNotFirstClause(StringBuilder toReturn) {
+        if (toReturn.length() != 0) {
+            toReturn.append("|");
+        }
     }
 
     private String removeTrailingSquareBracket(String split) {
@@ -105,13 +114,13 @@ public class DavidsStringCalculator implements StringCalculator {
         if (errorString.length() == 0) {
             return total;
         }
-        throw new RuntimeException("negatives not allowed:" + errorString.toString().replace("-", " -"));
+        throw new RuntimeException("negatives not allowed:" + errorString.toString());
     }
 
     private String validateIntValue(int intValue) {
         if (intValue < 0) {
             //wouldn't usually use raw Runtime exception
-            return Integer.toString(intValue);
+            return " " + Integer.toString(intValue);
         }
         return "";
     }
