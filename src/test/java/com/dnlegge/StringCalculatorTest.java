@@ -136,16 +136,14 @@ public class StringCalculatorTest {
         final int add = davidsStringCalculator.add("//[**]\n1**2**3");
 
         assertEquals(6, add);
-
     }
 
     @Test
-    public void addWithMultipleArbitraryLengthDelimiterTest() {
+    public void addWithMultipleSingleCharDelimiterTest() {
 
         final int add = davidsStringCalculator.add("//[*][%]\n1*2%3");
 
         assertEquals(6, add);
-
     }
 
 }

@@ -43,7 +43,7 @@ public class DavidsStringCalculator implements StringCalculator {
     private String getStringOfPossibleDelimiters(String numbers) {
         String firstLine = getFirstLine(numbers);
         if (!hasSquareBrackets(firstLine)) {
-            return firstLine;
+            return escapeSpecialRegexChars(firstLine);
         }
         return handleArbitraryLengthDelimiters(firstLine);
     }
@@ -54,10 +54,16 @@ public class DavidsStringCalculator implements StringCalculator {
 
     private String handleArbitraryLengthDelimiters(String firstLine) {
         final String[] delimiters = firstLine.split("[\\[]");
-        StringBuilder toReturn = new StringBuilder();
+        final StringBuilder toReturn = new StringBuilder();
         for (String split : delimiters) {
             if (!split.isEmpty()) {
+                if (toReturn.length() != 0) {
+                    toReturn.append("|");
+                }
+                toReturn.append("(");
                 toReturn.append(escapeSpecialRegexChars(removeTrailingSquareBracket(split)));
+                toReturn.append(")");
+
             }
         }
         return toReturn.toString();
@@ -67,7 +73,7 @@ public class DavidsStringCalculator implements StringCalculator {
         return split.substring(0, split.indexOf("]"));
     }
 
-    String escapeSpecialRegexChars(String str) {
+    private String escapeSpecialRegexChars(String str) {
         return str.replaceAll("\\*", "\\\\*");
     }
 
